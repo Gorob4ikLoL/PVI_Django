@@ -1,0 +1,50 @@
+{% extends 'instruments/base.html' %}
+
+{% block title %}Музичні Інструменти - Магазин{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Наші Музичні Інструменти</h1>
+
+<div class="row">
+    {% for instrument in instruments %}
+    <div class="col-md-4 mb-4 fade-in" style="animation-delay: {{ forloop.counter0|divisibleby:3 }}00ms">
+        <div class="card h-100">
+            <div class="position-relative">
+                {% if instrument.image %}
+                <img src="{{ instrument.image.url }}" class="card-img-top instrument-img" alt="{{ instrument.name }}">
+                {% else %}
+                <div class="card-img-top instrument-img bg-secondary d-flex align-items-center justify-content-center">
+                    <span class="text-white">Немає зображення</span>
+                </div>
+                {% endif %}
+                <div class="price-badge">{{ instrument.price }} грн</div>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ instrument.name }}</h5>
+                <div class="instrument-type">{{ instrument.instrument_type }}</div>
+                <p class="card-text flex-grow-1">{{ instrument.description|truncatechars:100 }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="text-muted">
+                        <i class="fas fa-boxes me-1"></i> {{ instrument.stock_quantity }} шт.
+                    </span>
+                    <div>
+                        <a href="{% url 'instruments:instrument_detail' instrument.id %}" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-info-circle me-1"></i> Детальніше
+                        </a>
+                        <a href="{% url 'instruments:create_order' instrument.id %}" class="btn btn-sm btn-success">
+                            <i class="fas fa-shopping-cart me-1"></i> Замовити
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <i class="fas fa-guitar fa-4x mb-3 text-muted"></i>
+        <h3>На даний момент інструментів немає в наявності.</h3>
+        <p class="text-muted">Будь ласка, перевірте наявність пізніше.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

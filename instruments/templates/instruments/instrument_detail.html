@@ -1,0 +1,96 @@
+{% extends 'instruments/base.html' %}
+
+{% block title %}{{ instrument.name }} - Музичний Магазин{% endblock %}
+
+{% block content %}
+<!-- Хлібні крихти -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'instruments:instrument_list' %}">Головна</a></li>
+        <li class="breadcrumb-item active">{{ instrument.name }}</li>
+    </ol>
+</nav>
+
+<div class="row fade-in">
+    <div class="col-md-6 mb-4">
+        {% if instrument.image %}
+        <img src="{{ instrument.image.url }}" class="detail-img" alt="{{ instrument.name }}">
+        {% else %}
+        <div class="bg-secondary p-5 text-center text-white rounded detail-img d-flex align-items-center justify-content-center">
+            <h3>Немає зображення</h3>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <div class="instrument-type">{{ instrument.instrument_type }}</div>
+        <h1>{{ instrument.name }}</h1>
+
+        <div class="price-tag">
+            <i class="fas fa-tag me-2"></i>{{ instrument.price }} грн
+        </div>
+
+        <div class="stock-info">
+            <i class="fas fa-boxes me-2"></i>В наявності: {{ instrument.stock_quantity }} шт.
+        </div>
+
+        <div class="mb-4">
+            <h4>Опис:</h4>
+            <p>{{ instrument.description }}</p>
+        </div>
+
+        <div class="d-grid gap-2">
+            {% if instrument.stock_quantity > 0 %}
+            <a href="{% url 'instruments:create_order' instrument.id %}" class="btn btn-success btn-lg">
+                <i class="fas fa-shopping-cart me-2"></i>Замовити
+            </a>
+            {% else %}
+            <button class="btn btn-secondary btn-lg" disabled>
+                <i class="fas fa-ban me-2"></i>Немає в наявності
+            </button>
+            {% endif %}
+
+            <a href="{% url 'instruments:instrument_list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Назад до списку
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 fade-in" style="animation-delay: 200ms">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Характеристики</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Тип інструменту:</span>
+                                <span class="fw-bold">{{ instrument.instrument_type }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Наявність:</span>
+                                <span class="fw-bold">{{ instrument.stock_quantity }} шт.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Ціна:</span>
+                                <span class="fw-bold">{{ instrument.price }} грн</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>Доставка:</span>
+                                <span class="fw-bold">1-3 дні</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
