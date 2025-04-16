@@ -23,19 +23,12 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    # Адмінка
+
     path('admin/', admin.site.urls),
-
-    # Основні сторінки (інтерфейс інструментів)
     path('', include('instruments.urls')),
-
-    # API маршрути (наприклад: /api/instruments/)
-    path('api/', include('instruments.urls')),  # Якщо всі API ендпоінти в instruments
-
-    # Swagger документація
+    path('api/', include('instruments.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
-# Додавання обробки медіафайлів
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
